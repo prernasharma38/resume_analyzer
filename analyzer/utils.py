@@ -1,5 +1,6 @@
 import docx2txt
 import re
+from .models import Resume
 
 def extract_info(filepath):
     text = docx2txt.process(filepath)
@@ -40,3 +41,24 @@ def extract_info(filepath):
     data['address'] = address if address else 'Not found'
 
     return data
+
+def store_resume_in_db(resume_data):
+    # Store resume data in the Django database using the Resume model
+    Resume.objects.create(
+        name=resume_data['name'],
+        email=resume_data['email'],
+        phone=resume_data['phone'],
+        education=', '.join(resume_data['education']),
+        hobbies=', '.join(resume_data['hobbies']),
+        lifestyle=', '.join(resume_data['lifestyle']),
+        address=resume_data['address']
+    )
+
+def get_resumes_from_db(filters=None):
+    # Fetch resumes from the Django database using the Resume model with optional filters
+    if filters:
+        query = Resume.objects.all()
+        for field, value in filters.items():
+            query = query.filter(**{f"{field}__icontains": value})
+        return query
+    return Resume.objects.all()

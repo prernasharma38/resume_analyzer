@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .filter-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .resume-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(128, 0, 128, 0.2); 
+            transition: box-shadow 0.3s ease;
+        }
+        .resume-card:hover {
+            box-shadow: 0 8px 16px rgba(128, 0, 128, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Resume Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Resume Dashboard</h1>
+        
+        <!-- Filter Section -->
+        <div class="filter-section mb-4">
+            <h4>Filter Resumes</h4>
+            <form method="GET" action="{% url 'dashboard' %}">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter email">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="education" class="form-label">Education</label>
+                        <input type="text" class="form-control" id="education" name="education" placeholder="Enter education">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="hobbies" class="form-label">Hobbies</label>
+                        <input type="text" class="form-control" id="hobbies" name="hobbies" placeholder="Enter hobbies">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="lifestyle" class="form-label">Lifestyle</label>
+                        <input type="text" class="form-control" id="lifestyle" name="lifestyle" placeholder="Enter lifestyle">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Reset</a>
+            </form>
+        </div>
+
+        <!-- Resumes List -->
+        <div>
+            <h4>Resumes</h4>
+            {% if resumes %}
+                <div class="row">
+                    {% for resume in resumes %}
+                    <div class="col-md-3">
+                        <div class="resume-card">
+                            <h5>{{ resume.name }}</h5>
+                            <p><strong>Email:</strong> {{ resume.email }}</p>
+                            <p><strong>Education:</strong> {{ resume.education }}</p>
+                            <p><strong>Hobbies:</strong> {{ resume.hobbies }}</p>
+                            <p><strong>Lifestyle:</strong> {{ resume.lifestyle }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">No resumes found matching the filters.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
